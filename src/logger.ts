@@ -1,6 +1,6 @@
-import winston from "winston"
-import DiscordTransport from "winston-discord-transport"
-import config from "./environment"
+// import winston from "winston"
+// import DiscordTransport from "winston-discord-transport"
+// import config from "./environment"
 
 // const logger = winston.createLogger({
 //   transports: [

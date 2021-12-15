@@ -10,13 +10,7 @@ export default {
   db: process.env.DB || "",
   port: process.env.PORT || 3000,
 
-  twilioSid: process.env.TWILIO_ACCOUNT_SID || "",
-  twilioToken: process.env.TWILIO_AUTH_TOKEN || "",
-  twilioNumber: process.env.TWILIO_PHONE_NUMBER || "",
-
   mailUser: process.env.MAIL_USER || "",
   mailJetKey: process.env.MAILJET_KEY || "",
   mailJetSecret: process.env.MAILJET_SECRET || "",
-  // tgToken: process.env.TG_TOKEN || '',
-  // discordWebhook: process.env.DISCORD_WEBHOOK || ''
 }

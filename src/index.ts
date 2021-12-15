@@ -9,32 +9,19 @@ import { MongoClient, ObjectId } from "mongodb"
 import {
   Cluster,
   Config,
-  GroupConfig,
   MangoClient,
-  MangoAccount,
   IDS,
 } from "@blockworks-foundation/mango-client"
 import { Commitment, Connection, PublicKey } from "@solana/web3.js"
 
 import { UserError } from "./errors"
-// import { sendLogsToDiscord } from "./logger"
-import {
-  // initiateTelegramBot,
-  // generateTelegramCode,
-  validateMangoAccount,
-  // validatePhoneNumber,
-  validateEmail,
-  reduceMangoGroups,
-  sendAlert,
-} from "./utils"
+import { validateMangoAccount, validateEmail, sendAlert } from "./utils"
 import config from "./environment"
 
 const MESSAGE = "Your health ratio is at or below @ratio@% \n"
 
 const app = new Koa()
 const router = new Router()
-
-// const rpcUrl = "https://mango.rpcpool.com/946ef7337da3f5b8d3e4a34e7f88"
 
 const clientConfig = new Config(IDS)
 
@@ -46,7 +33,6 @@ if (!groupIds) {
 }
 
 const mangoProgramId = groupIds.mangoProgramId
-// const mangoGroupKey = groupIds.publicKey
 
 const connection = new Connection(
   process.env.ENDPOINT_URL || clientConfig.cluster_urls[cluster],
@@ -67,8 +53,6 @@ app.use(
     { useUnifiedTopology: true }
   )
 )
-
-// initiateTelegramBot()
 
 router.post("/alerts", async (ctx, next) => {
   try {
@@ -202,14 +186,9 @@ const runCron = async () => {
         .collection("alerts")
         .find({ open: true })
         .toArray()
+
       console.log(alerts)
-      // const uniqueMangoGroupPks: string[] = [
-      //   ...new Set(alerts.map((alert) => alert.mangoGroupPk)),
-      // ]
-      // const mangoGroups: any = await reduceMangoGroups(
-      //   client,
-      //   uniqueMangoGroupPks
-      // )
+
       alerts.forEach(async (alert) => {
         handleAlert(alert, db)
       })

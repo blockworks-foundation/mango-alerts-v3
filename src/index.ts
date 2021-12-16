@@ -156,10 +156,7 @@ const handleAlert = async (alert: any, db: any) => {
       message += "\nVisit: https://trade.mango.markets/"
       const alertSent = await sendAlert(alert, message)
       if (alertSent) {
-        db.collection("alerts").updateOne(
-          { _id: new ObjectId(alert._id) },
-          { $set: { open: false, triggeredTimestamp: Date.now() } }
-        )
+        db.collection("alerts").deleteOne({ _id: alert._id })
       }
     }
   } catch (e) {

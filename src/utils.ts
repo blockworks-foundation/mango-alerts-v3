@@ -1,4 +1,3 @@
-// import { MongoClient } from "mongodb"
 import * as nodemailer from "nodemailer"
 import * as EmailValidator from "email-validator"
 
@@ -11,34 +10,30 @@ import config from "./environment"
 
 const mailjetTransport = require("nodemailer-mailjet-transport")
 
-// // This needs to be global because it uses event listeners
-// // const bot = new TelegramBot.default(config.tgToken, {polling: true});
-// const twilioClient = new Twilio(config.twilioSid, config.twilioToken)
-
 export const validateMangoAccount = (client: MangoClient, alert: any) => {
   return new Promise<void>(async (resolve, reject) => {
     try {
       const mangoGroupPk = new PublicKey(alert.mangoGroupPk)
-      const mangoAccountPk = new PublicKey(alert.marginAccountPk)
+      const mangoAccountPk = new PublicKey(alert.mangoAccountPk)
       const mangoGroup = await client.getMangoGroup(mangoGroupPk)
       const mangoAccount = await client.getMangoAccount(
         mangoAccountPk,
         mangoGroup.dexProgramId
       )
       if (!mangoGroup || !mangoAccount) {
-        reject(new UserError("Invalid margin account or mango group"))
+        reject(new UserError("Invalid mango account or mango group"))
       } else {
         resolve()
       }
     } catch (e) {
-      reject(new UserError("Invalid margin account or mango group"))
+      reject(new UserError("Invalid mango account or mango group"))
     }
   })
 }
 
 export const validateEmail = (email: string) => {
   if (!EmailValidator.validate(email)) {
-    throw new UserError("The entered email is incorrect")
+    throw new UserError("Enter a valid email")
   }
   return
 }
@@ -60,8 +55,7 @@ const sendEmail = async (email: string, message: string) => {
   }
 
   try {
-    const info = await transport.sendMail(mailOptions)
-    console.log(info)
+    await transport.sendMail(mailOptions)
   } catch (err) {
     console.error(err)
   }

@@ -57,13 +57,9 @@ app.use(
 router.post("/alerts", async (ctx, next) => {
   try {
     const alert: any = ctx.request.body
-    // await validateMangoAccount(client, alert)
-    if (alert.alertProvider == "mail") {
-      validateEmail(alert.email)
-      ctx.body = { status: "success" }
-    } else {
-      throw new UserError("Invalid alert provider")
-    }
+    await validateMangoAccount(client, alert)
+    validateEmail(alert.email)
+    ctx.body = { status: "success" }
     alert.open = true
     alert.timestamp = Date.now()
     ctx.db.collection("alerts").insertOne(alert)
@@ -156,8 +152,8 @@ const handleAlert = async (alert: any, db: any) => {
     )
     if (health.toNumber() <= parseFloat(alert.health)) {
       let message = MESSAGE.replace("@ratio@", alert.health)
-      message += mangoAccount.name || alert.mangoAccountPk
-      message += "\nVisit https://trade.mango.markets/"
+      message += `For account: ${mangoAccount.name || alert.mangoAccountPk}`
+      message += "\nVisit: https://trade.mango.markets/"
       const alertSent = await sendAlert(alert, message)
       if (alertSent) {
         db.collection("alerts").updateOne(

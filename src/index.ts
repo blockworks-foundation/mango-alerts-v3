@@ -152,7 +152,7 @@ const handleAlert = async (alert: any, db: any) => {
     )
     if (health.toNumber() <= parseFloat(alert.health)) {
       let message = MESSAGE.replace("@ratio@", alert.health)
-      message += `For account: ${mangoAccount.name || alert.mangoAccountPk}`
+      message += `Account: ${mangoAccount.name || alert.mangoAccountPk}`
       message += "\nVisit: https://trade.mango.markets/"
       const alertSent = await sendAlert(alert, message)
       if (alertSent) {
@@ -183,12 +183,11 @@ const runCron = async () => {
         .find({ open: true })
         .toArray()
 
-      console.log(alerts)
-
       alerts.forEach(async (alert) => {
         handleAlert(alert, db)
       })
     } catch (e) {
+      console.log(e)
       // sendLogsToDiscord(null, e)
     }
   })

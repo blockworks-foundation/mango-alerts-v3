@@ -126,6 +126,42 @@ router.get("/alerts/:mangoAccountPk", async (ctx, next) => {
   }
 })
 
+router.post("/updates", async (ctx, next) => {
+  try {
+    const update: any = ctx.request.body
+    // await validateMangoAccount(client, alert)
+    // validateEmail(alert.email)
+    ctx.body = { status: "success" }
+    // alert.open = true
+    // alert.timestamp = Date.now()
+    ctx.db.collection("updates").insertOne(update)
+  } catch (e: any) {
+    let errorMessage = "Something went wrong"
+    if (e.name == "UserError") {
+      errorMessage = e.message
+    } else {
+      // sendLogsToDiscord(null, e)
+    }
+    ctx.throw(400, errorMessage)
+  }
+  await next()
+})
+
+router.get("/get-updates", async (ctx, next) => {
+  try {
+    const updates = await ctx.db.collection("updates").find().toArray()
+    ctx.body = { updates }
+  } catch (e: any) {
+    let errorMessage = "Something went wrong"
+    if (e.name == "UserError") {
+      errorMessage = e.message
+    } else {
+      // sendLogsToDiscord(null, e)
+    }
+    ctx.throw(400, errorMessage)
+  }
+})
+
 app.use(router.allowedMethods())
 app.use(router.routes())
 

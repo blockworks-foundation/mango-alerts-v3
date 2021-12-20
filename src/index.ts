@@ -129,11 +129,8 @@ router.get("/alerts/:mangoAccountPk", async (ctx, next) => {
 router.post("/updates", async (ctx, next) => {
   try {
     const update: any = ctx.request.body
-    // await validateMangoAccount(client, alert)
-    // validateEmail(alert.email)
+
     ctx.body = { status: "success" }
-    // alert.open = true
-    // alert.timestamp = Date.now()
     ctx.db.collection("updates").insertOne(update)
   } catch (e: any) {
     let errorMessage = "Something went wrong"
@@ -160,6 +157,23 @@ router.get("/get-updates", async (ctx, next) => {
     }
     ctx.throw(400, errorMessage)
   }
+})
+
+router.post("/delete-update", async (ctx, next) => {
+  try {
+    const id: any = new ObjectId(ctx.request.body.id)
+    if (id) {
+      ctx.body = { status: "success" }
+    }
+    ctx.db.collection("updates").deleteOne({ _id: id })
+  } catch (e: any) {
+    let errorMessage = "Something went wrong"
+    if (e.name == "UserError") {
+      errorMessage = e.message
+    }
+    ctx.throw(400, errorMessage)
+  }
+  await next()
 })
 
 app.use(router.allowedMethods())

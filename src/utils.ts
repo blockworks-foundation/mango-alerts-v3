@@ -40,7 +40,7 @@ export const validateUpdatePassword = (password: string) => {
         resolve()
       }
     } catch (e) {
-      reject(new UserError("Something went wrong"))
+      reject(new UserError("Invalid password"))
     }
   })
 }

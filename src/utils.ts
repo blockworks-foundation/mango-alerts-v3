@@ -31,6 +31,20 @@ export const validateMangoAccount = (client: MangoClient, alert: any) => {
   })
 }
 
+export const validateUpdatePassword = (password: string) => {
+  return new Promise<void>(async (resolve, reject) => {
+    try {
+      if (password != config.updatePassword) {
+        reject(new UserError("Invalid password"))
+      } else {
+        resolve()
+      }
+    } catch (e) {
+      reject(new UserError("Something went wrong"))
+    }
+  })
+}
+
 export const validateEmail = (email: string) => {
   if (!EmailValidator.validate(email)) {
     throw new UserError("Enter a valid email")

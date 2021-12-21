@@ -13,4 +13,5 @@ export default {
   mailUser: process.env.MAIL_USER || "",
   mailJetKey: process.env.MAILJET_KEY || "",
   mailJetSecret: process.env.MAILJET_SECRET || "",
+  updatePassword: process.env.UPDATE_PASSWORD,
 }

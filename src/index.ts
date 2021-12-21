@@ -15,7 +15,12 @@ import {
 import { Commitment, Connection, PublicKey } from "@solana/web3.js"
 
 import { UserError } from "./errors"
-import { validateMangoAccount, validateEmail, sendAlert } from "./utils"
+import {
+  validateMangoAccount,
+  validateEmail,
+  sendAlert,
+  validateUpdatePassword,
+} from "./utils"
 import config from "./environment"
 
 const MESSAGE = "Your health ratio is at or below @ratio@% \n"
@@ -129,15 +134,13 @@ router.get("/alerts/:mangoAccountPk", async (ctx, next) => {
 router.post("/updates", async (ctx, next) => {
   try {
     const update: any = ctx.request.body
-
+    await validateUpdatePassword(update.password)
     ctx.body = { status: "success" }
     ctx.db.collection("updates").insertOne(update)
   } catch (e: any) {
     let errorMessage = "Something went wrong"
     if (e.name == "UserError") {
       errorMessage = e.message
-    } else {
-      // sendLogsToDiscord(null, e)
     }
     ctx.throw(400, errorMessage)
   }

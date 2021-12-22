@@ -181,6 +181,28 @@ router.post("/delete-update", async (ctx, next) => {
   await next()
 })
 
+router.post("/update-seen", async (ctx, next) => {
+  try {
+    const update: any = ctx.request.body
+    if (update) {
+      ctx.body = { status: "success" }
+    }
+    ctx.db
+      .collection("updates")
+      .updateOne(
+        { _id: new ObjectId(update._id) },
+        { $set: { hasSeen: update.hasSeen } }
+      )
+  } catch (e: any) {
+    let errorMessage = "Something went wrong"
+    if (e.name == "UserError") {
+      errorMessage = e.message
+    }
+    ctx.throw(400, errorMessage)
+  }
+  await next()
+})
+
 app.use(router.allowedMethods())
 app.use(router.routes())
 

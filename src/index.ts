@@ -203,6 +203,28 @@ router.post("/update-seen", async (ctx, next) => {
   await next()
 })
 
+router.post("/clear-updates", async (ctx, next) => {
+  try {
+    const update: any = ctx.request.body
+    if (update) {
+      ctx.body = { status: "success" }
+    }
+    ctx.db
+      .collection("updates")
+      .updateOne(
+        { _id: new ObjectId(update._id) },
+        { $set: { hasCleared: update.hasCleared } }
+      )
+  } catch (e: any) {
+    let errorMessage = "Something went wrong"
+    if (e.name == "UserError") {
+      errorMessage = e.message
+    }
+    ctx.throw(400, errorMessage)
+  }
+  await next()
+})
+
 app.use(router.allowedMethods())
 app.use(router.routes())
 

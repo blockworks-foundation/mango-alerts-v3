@@ -134,9 +134,10 @@ router.get("/alerts/:mangoAccountPk", async (ctx, next) => {
 router.post("/updates", async (ctx, next) => {
   try {
     const req: any = ctx.request.body
+    const update = { ...req.update, date: Date.now() }
     await validateUpdatePassword(req.password)
     ctx.body = { status: "success" }
-    ctx.db.collection("updates").insertOne(req.update)
+    ctx.db.collection("updates").insertOne(update)
   } catch (e: any) {
     let errorMessage = "Something went wrong"
     if (e.name == "UserError") {

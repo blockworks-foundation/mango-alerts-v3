@@ -280,6 +280,15 @@ const runCron = async () => {
         .find({ open: true })
         .toArray()
 
+      const updates: any[] = await db
+        .collection("updates")
+        .find({ expiryDate: { $lt: Date.now() } })
+        .toArray()
+
+      updates.forEach(async (update) => {
+        db.collection("updates").deleteOne({ _id: update._id })
+      })
+
       alerts.forEach(async (alert) => {
         handleAlert(alert, db)
       })

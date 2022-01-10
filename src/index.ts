@@ -253,8 +253,8 @@ const handleAlert = async (alert: any, db: any) => {
     if (health.toNumber() <= parseFloat(alert.health)) {
       let message = MESSAGE.replace("@ratio@", alert.health)
       message +=
-        "Deposit more collateral or reduce your liabilities to improve your account health"
-      message += `\View your account: https://trade.mango.markets/account?pubkey=${alert.mangoAccountPk}`
+        "Deposit more collateral or reduce your liabilities to improve your account health. \n"
+      message += `View your account: https://trade.mango.markets/account?pubkey=${alert.mangoAccountPk}`
       const alertSent = await sendAlert(alert, message)
       if (alertSent) {
         db.collection("alerts").deleteOne({ _id: alert._id })

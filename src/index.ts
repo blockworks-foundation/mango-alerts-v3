@@ -62,6 +62,8 @@ app.use(
 router.post("/alerts", async (ctx, next) => {
   try {
     const alert: any = ctx.request.body
+    await validateMangoAccount(client, alert)
+    validateEmail(alert.email)
     ctx.body = { status: "success" }
     alert.open = true
     alert.timestamp = Date.now()

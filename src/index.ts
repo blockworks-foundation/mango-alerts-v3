@@ -253,6 +253,7 @@ const handleAlert = async (alert: any, db: any) => {
       mangoAccountPk,
       mangoGroup.dexProgramId
     )
+    const walletPublicKey = mangoAccount.owner.toBase58();
     const health = await mangoAccount.getHealthRatio(
       mangoGroup,
       mangoCache,
@@ -263,8 +264,7 @@ const handleAlert = async (alert: any, db: any) => {
       message +=
         "Deposit more collateral or reduce your liabilities to improve your account health. \n"
       message += `View your account: https://trade.mango.markets/account?pubkey=${alert.mangoAccountPk}`
-      // TODO: Replace with notifi SDK
-      const alertSent = await sendAlert(alert, message)
+      const alertSent = await sendAlert(alert, message, Number(health), walletPublicKey)
       if (alertSent) {
         db.collection("alerts").deleteOne({ _id: alert._id })
       }

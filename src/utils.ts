@@ -3,12 +3,24 @@ import * as EmailValidator from "email-validator"
 
 import { MangoClient } from "@blockworks-foundation/mango-client"
 import { PublicKey } from "@solana/web3.js"
+import {
+  NotifiClient,
+  NotifiEnvironment,
+  createAxiosInstance,
+} from '@notifi-network/notifi-node';
+import axios from 'axios';
 
 import { UserError } from "./errors"
 
 import config from "./environment"
+import { randomUUID } from "crypto"
 
 const mailjetTransport = require("nodemailer-mailjet-transport")
+
+// Initialize Notifi client
+const env: NotifiEnvironment = 'Development';
+const axiosInstance = createAxiosInstance(axios, env);
+const notifiClient = new NotifiClient(axiosInstance);
 
 export const validateMangoAccount = (client: MangoClient, alert: any) => {
   return new Promise<void>(async (resolve, reject) => {
@@ -77,16 +89,61 @@ const sendEmail = async (email: string, message: string) => {
 
   try {
     await transport.sendMail(mailOptions)
+    return true
   } catch (err) {
     console.error(err)
   }
-  transport.sendMail(mailOptions)
+
+  return false
 }
 
-export const sendAlert = async (alert: any, message: string) => {
+const sendNotifiAlert = async (alertId: string, health: number, walletPublicKey: string ) => {
+  const sid = config.notifiSid
+  const secret = config.notifiSecret
+  if (!sid || !secret) {
+    throw new UserError("Missing sid/secret pair")
+  }
+
+  try {
+    // login with sid/secret to get jwt
+    const { token: jwt, expiry } = await notifiClient.logIn({ sid, secret })
+    console.log(`login successfully, received jwt expire at ${expiry}`)
+    if (jwt) {
+      // trigger notifi to send notification
+      const key = randomUUID()
+      await notifiClient.sendSimpleHealthThreshold(jwt, {
+        key,
+        walletPublicKey,
+        walletBlockchain: "SOLANA",
+        value: health,
+      })
+      console.log(`sending alert with key: ${key}, walletPublicKey: ${walletPublicKey}, value: ${health}`);
+      // call notifi to delete user alert
+      await notifiClient.deleteUserAlert(jwt, { alertId })
+      console.log(`deleted alertId: ${alertId}`);
+    } else {
+      throw new UserError("Invalid jwt, please login")
+    }
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}
+
+export const sendAlert = async (alert: any, message: string, health: number, walletPublicKey: string) => {
   if (alert.alertProvider == "mail") {
     const email = alert.email
-    sendEmail(email, message)
+    const emailSent = await sendEmail(email, message)
+    return emailSent
+  } else if (alert.alertProvider == "notifi") {
+    try {
+      const alertSent = await sendNotifiAlert(alert.notifiAlertId, health, walletPublicKey)
+      return alertSent;
+    } catch (err) {
+      console.error(err)
+      return false
+    }
   }
-  return true
+
+  return false
 }

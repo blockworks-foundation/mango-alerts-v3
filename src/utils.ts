@@ -52,6 +52,13 @@ export const validateEmail = (email: string) => {
   return
 }
 
+export const validateNotifiAlertId = (notifiAlertId: string) => {
+  if (!notifiAlertId) {
+    throw new UserError("Invalid notifiAlertId")
+  }
+  return
+}
+
 const sendEmail = async (email: string, message: string) => {
   const transport = nodemailer.createTransport(
     mailjetTransport({

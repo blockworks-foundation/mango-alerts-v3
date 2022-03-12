@@ -65,6 +65,18 @@
   dependencies:
     vary "^1.1.2"
 
+"@notifi-network/notifi-axios-utils@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@notifi-network/notifi-axios-utils/-/notifi-axios-utils-0.6.0.tgz#1c0f358c6537547d3f2cc023d30ce858fea0fb49"
+  integrity sha512-LXtQYpAlrUHp/beIpVwxgutjINxDszvmaH7OLOJktUQ2uRXog14qJI3hsFRGa7rdCHRkEcE+l5eU92jrUEaW5A==
+
+"@notifi-network/notifi-node@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@notifi-network/notifi-node/-/notifi-node-0.6.0.tgz#4063263298e6711742f4fcaadeef3c107a86fbe0"
+  integrity sha512-wHYb+xwiJXMk+rdtBlVObOoHmD/4y9qKuNJdGnKgAgrJQmSLZxCxsnG/+5+xhDIygPyPssMTRbrrjzWa/Nl1xw==
+  dependencies:
+    "@notifi-network/notifi-axios-utils" "^0.6.0"
+
 "@project-serum/anchor@^0.11.1":
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.11.1.tgz#155bff2c70652eafdcfd5559c81a83bb19cec9ff"

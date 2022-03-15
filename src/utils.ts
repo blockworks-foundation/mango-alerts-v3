@@ -115,12 +115,9 @@ const sendNotifiAlert = async (alertId: string, health: number, walletPublicKey:
         key,
         walletPublicKey,
         walletBlockchain: "SOLANA",
-        value: health,
+        healthValue: health,
       })
       console.log(`sending alert with key: ${key}, walletPublicKey: ${walletPublicKey}, value: ${health}`);
-      // call notifi to delete user alert
-      await notifiClient.deleteUserAlert(jwt, { alertId })
-      console.log(`deleted alertId: ${alertId}`);
     } else {
       throw new UserError("Invalid jwt, please login")
     }

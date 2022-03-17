@@ -118,6 +118,7 @@ const sendNotifiAlert = async (alertId: string, health: number, walletPublicKey:
         healthValue: health,
       })
       console.log(`sending alert with key: ${key}, walletPublicKey: ${walletPublicKey}, value: ${health}`);
+      return true
     } else {
       throw new UserError("Invalid jwt, please login")
     }

@@ -65,17 +65,17 @@
   dependencies:
     vary "^1.1.2"
 
-"@notifi-network/notifi-axios-utils@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@notifi-network/notifi-axios-utils/-/notifi-axios-utils-0.7.0.tgz#0caf00f88cf0f08e004de2e228b870ff2592e9a7"
-  integrity sha512-guBCh1Jo3iH7BkcvkTH+vPVdMNlcWomVMsfoNWlcH3FbUrj5xIdZq6r+ADafgjquQ8NbajRqPGCYErU7FS6Szw==
+"@notifi-network/notifi-axios-utils@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@notifi-network/notifi-axios-utils/-/notifi-axios-utils-0.8.0.tgz#83ac4a649ee9facbd32a8d121748bb5c827f9c4f"
+  integrity sha512-q+RDUZ2gRkLl0gfKy6pVQrZHe9fGwLa+zH1Fy+dm3U6SCyAZX8cjqiLpFLYVJE89nguMMc28tnp3T5K39+wBlQ==
 
-"@notifi-network/notifi-node@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@notifi-network/notifi-node/-/notifi-node-0.7.0.tgz#12f53cfe323ea9f05d3f9caaa6d7db4f081b472b"
-  integrity sha512-sf3wFdbCIVKj6oGRcQEKnZWjovnXHUFzup8ILPWZFK3nIaK885c3l5rKdS+WW1pwSVWT47HQZtbxvxPy3b/3fw==
+"@notifi-network/notifi-node@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@notifi-network/notifi-node/-/notifi-node-0.8.0.tgz#0c91b5f3ac27c41e4b54ddd5eed8a9118e54a2e6"
+  integrity sha512-bgleeL1M6RMm0GQFKhXETH6fbtDOJ7poqBX/VPg2ZTG7hThhYcxlFnYhQ33/qnG2FsMmYq1YjOlCV5Ens6o1XA==
   dependencies:
-    "@notifi-network/notifi-axios-utils" "^0.7.0"
+    "@notifi-network/notifi-axios-utils" "^0.8.0"
 
 "@project-serum/anchor@^0.11.1":
   version "0.11.1"

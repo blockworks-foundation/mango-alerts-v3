@@ -107,7 +107,7 @@ const sendNotifiAlert = async (alertId: string, health: number, walletPublicKey:
   try {
     // login with sid/secret to get jwt
     const { token: jwt, expiry } = await notifiClient.logIn({ sid, secret })
-    console.log(`login successfully, received jwt expire at ${expiry}`)
+    // console.log(`login successfully, received jwt expire at ${expiry}`)
     if (jwt) {
       // trigger notifi to send notification
       const key = randomUUID()
@@ -117,7 +117,7 @@ const sendNotifiAlert = async (alertId: string, health: number, walletPublicKey:
         walletBlockchain: "SOLANA",
         healthValue: health,
       })
-      console.log(`sending alert with key: ${key}, walletPublicKey: ${walletPublicKey}, value: ${health}`);
+      // console.log(`sending alert with key: ${key}, walletPublicKey: ${walletPublicKey}, value: ${health}`);
       return true
     } else {
       throw new UserError("Invalid jwt, please login")

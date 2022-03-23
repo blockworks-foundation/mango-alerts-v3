@@ -14,4 +14,6 @@ export default {
   mailJetKey: process.env.MAILJET_KEY || "",
   mailJetSecret: process.env.MAILJET_SECRET || "",
   updatePassword: process.env.UPDATE_PASSWORD,
+  notifiSid: process.env.NOTIFI_SID || "",
+  notifiSecret: process.env.NOTIFI_SECRET || ""
 }

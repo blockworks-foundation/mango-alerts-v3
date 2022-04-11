@@ -270,7 +270,7 @@ const handleAlert = async (alert: any, db: any) => {
       }
     }
   } catch (e) {
-    console.log(e)
+    console.log('Error handling alert:', alert.mangoAccountPk, e)
     // sendLogsToDiscord(null, e)
   }
 }

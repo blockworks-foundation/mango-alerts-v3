@@ -64,9 +64,9 @@ router.post("/alerts", async (ctx, next) => {
   try {
     const alert: any = ctx.request.body
     await validateMangoAccount(client, alert)
-    if (alert.alertProvider === 'mail') {
+    if (alert.alertProvider === "mail") {
       validateEmail(alert.email)
-    } else if (alert.alertProvider === 'notifi') {
+    } else if (alert.alertProvider === "notifi") {
       validateNotifiAlertId(alert.notifiAlertId)
     } else {
       throw new UserError("Invalid alertProvider")
@@ -253,24 +253,31 @@ const handleAlert = async (alert: any, db: any) => {
       mangoAccountPk,
       mangoGroup.dexProgramId
     )
-    const walletPublicKey = mangoAccount.owner.toBase58();
-    const health = await mangoAccount.getHealthRatio(
-      mangoGroup,
-      mangoCache,
-      "Maint"
-    )
-    if (health.toNumber() <= parseFloat(alert.health)) {
-      let message = MESSAGE.replace("@ratio@", alert.health)
-      message +=
-        "Deposit more collateral or reduce your liabilities to improve your account health. \n"
-      message += `View your account: https://trade.mango.markets/account?pubkey=${alert.mangoAccountPk}`
-      const alertSent = await sendAlert(alert, message, Number(health), walletPublicKey)
-      if (alertSent) {
-        db.collection("alerts").deleteOne({ _id: alert._id })
+    if (mangoAccount) {
+      const walletPublicKey = mangoAccount.owner.toBase58()
+      const health = await mangoAccount.getHealthRatio(
+        mangoGroup,
+        mangoCache,
+        "Maint"
+      )
+      if (health.toNumber() <= parseFloat(alert.health)) {
+        let message = MESSAGE.replace("@ratio@", alert.health)
+        message +=
+          "Deposit more collateral or reduce your liabilities to improve your account health. \n"
+        message += `View your account: https://trade.mango.markets/account?pubkey=${alert.mangoAccountPk}`
+        const alertSent = await sendAlert(
+          alert,
+          message,
+          Number(health),
+          walletPublicKey
+        )
+        if (alertSent) {
+          db.collection("alerts").deleteOne({ _id: alert._id })
+        }
       }
     }
   } catch (e) {
-    console.log('Error handling alert:', alert.mangoAccountPk, e)
+    console.log("Error handling alert:", alert.mangoAccountPk, e)
     // sendLogsToDiscord(null, e)
   }
 }

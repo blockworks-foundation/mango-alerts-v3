@@ -260,7 +260,7 @@ const handleAlert = async (alert: any, db: any) => {
         mangoCache,
         "Maint"
       )
-      if (health.toNumber() <= parseFloat(alert.health)) {
+      if (health && health.toNumber() <= parseFloat(alert.health)) {
         let message = MESSAGE.replace("@ratio@", alert.health)
         message +=
           "Deposit more collateral or reduce your liabilities to improve your account health. \n"
